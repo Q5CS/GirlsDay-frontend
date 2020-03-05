@@ -160,7 +160,7 @@ export default {
         });
     },
     onSubmit() {
-      console.log(this.wishForm);
+      // console.log(this.wishForm);
       Toast.loading({
         duration: 0,
         mask: true,
