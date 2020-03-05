@@ -129,6 +129,7 @@ export default {
   computed: {
     ...mapGetters(["userinfo", "claimedWishes", "stat"]),
     canClaimWish: function() {
+      if (!this.claimedWishes) return true;
       let n = 0; // 未完成的任务数量
       this.claimedWishes.forEach(ele => {
         if (ele.status < 300) {
