@@ -1,32 +1,102 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="app" class="app">
+    <van-sticky>
+      <van-nav-bar
+        v-show="title && showNav"
+        :title="title"
+        left-arrow
+        @click-left="onBack"
+      />
+    </van-sticky>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
+    <van-tabbar v-model="active" active-color="#f77984">
+      <van-tabbar-item
+        :icon="item.icon"
+        @click="routeTo(item.link)"
+        v-for="item in items"
+        :key="item.link"
+      >
+        {{ item.name }}
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { NavBar, Sticky, Tabbar, TabbarItem } from "vant";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "App",
+  components: {
+    [NavBar.name]: NavBar,
+    [Sticky.name]: Sticky,
+    [Tabbar.name]: Tabbar,
+    [TabbarItem.name]: TabbarItem
+  },
+  data() {
+    return {
+      active: 0,
+      items: [
+        {
+          name: "心愿墙",
+          link: "/",
+          icon: "home-o"
+        },
+        {
+          name: "祝福墙",
+          link: "/bless",
+          icon: "flower-o"
+        },
+        {
+          name: "我",
+          link: "/user/me",
+          icon: "friends-o"
+        }
+      ]
+    };
+  },
+  mounted() {
+    this.handleRouterChange(this.$route);
+  },
+  computed: {
+    title() {
+      const { name } = this.$route.meta;
+      return name ? name.replace(/-/g, "") : "";
+    },
+    showNav() {
+      return this.$route.meta.hideNav != true;
+    }
+  },
+  methods: {
+    routeTo(link) {
+      this.$router.push(link);
+    },
+    onBack() {
+      history.back();
+    },
+    handleRouterChange(to) {
+      this.active = null;
+      for (var i = 0; i < this.items.length; i++) {
+        if (to.path === this.items[i].link) {
+          this.active = i;
+          break;
+        }
+      }
+    }
+  },
+  watch: {
+    // 监听路由变化，同步处理 TabBar 的高亮
+    $route(to) {
+      this.handleRouterChange(to);
     }
   }
+};
+</script>
+
+<style>
+.app {
+  padding-bottom: 50px; /* footer */
 }
 </style>
