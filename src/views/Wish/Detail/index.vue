@@ -3,7 +3,16 @@
     <van-loading v-if="loading" size="80px" style="padding: 20px 0" vertical
       >加载中......</van-loading
     >
+
     <div class="wish-container" v-if="!loading">
+      <van-notice-bar
+        text="若心愿已被实现，请点击确认按钮！"
+        v-if="data.status === 200 && userinfo.id === data.uid"
+      />
+      <van-notice-bar
+        text="若您已实现该心愿，请联系女生确认！"
+        v-if="data.status === 200 && userinfo.id === data.assigned_uid"
+      />
       <van-cell-group>
         <van-cell title="类别" :value="data.type | wishTypeFilter" />
         <van-cell
@@ -32,6 +41,7 @@
           v-if="data.file_json && data.file_json.length"
         />
       </div>
+
       <div style="margin: 10px;" v-if="data.status < 300">
         <van-button
           round
@@ -75,13 +85,18 @@
         </div>
         <div
           class="wish-actions"
-          v-if="data.status > 100 && data.status <= 200"
+          v-if="
+            data.status > 100 &&
+              data.status < 300 &&
+              (userinfo.id === data.uid || userinfo.id === data.assigned_uid)
+          "
         >
           <van-button
             class="wish-action-button"
             round
             block
             type="primary"
+            v-if="userinfo.id === data.uid"
             @click="handleCompeleteWish(data.id)"
           >
             确认实现
@@ -102,7 +117,15 @@
 </template>
 
 <script>
-import { Button, Cell, CellGroup, Dialog, Loading, Toast } from "vant";
+import {
+  Button,
+  Cell,
+  CellGroup,
+  Dialog,
+  Loading,
+  Toast,
+  NoticeBar
+} from "vant";
 import {
   getWish,
   deleteWish,
@@ -116,7 +139,8 @@ export default {
     [Button.name]: Button,
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
-    [Loading.name]: Loading
+    [Loading.name]: Loading,
+    [NoticeBar.name]: NoticeBar
   },
   data() {
     return {
