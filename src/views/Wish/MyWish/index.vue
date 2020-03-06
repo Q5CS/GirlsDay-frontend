@@ -31,7 +31,7 @@ export default {
     WishListItem
   },
   computed: {
-    ...mapGetters(["wishes", "stat"]),
+    ...mapGetters(["userinfo", "wishes", "stat"]),
     canWish: function() {
       if (!this.wishes) {
         return true;
