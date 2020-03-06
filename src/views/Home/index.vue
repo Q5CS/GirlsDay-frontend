@@ -15,15 +15,27 @@
     </div>
     <div class="now-progress">有个心愿已被你领取，请加油实现哦！</div> -->
     <div class="action-wrap">
-      <div class="action-box" @click="handleAction()">
+      <div
+        class="action-box"
+        @click="$router.push({ path: '/wish/myWish' })"
+        v-if="userinfo.is_female"
+        style="margin-bottom: 10px"
+      >
         <div class="drifting-bottle"></div>
-        <div class="action-text" v-if="!userinfo.is_female">
-          <h3>我的任务</h3>
-          <span>点这里查看我认领的心愿</span>
-        </div>
-        <div class="action-text" v-if="userinfo.is_female">
+        <div class="action-text">
           <h3>我的心愿</h3>
           <span>点这里许愿或查看许下的心愿</span>
+        </div>
+        <van-icon class="action-arrow" name="arrow" color="#666666" />
+      </div>
+      <div
+        class="action-box"
+        @click="$router.push({ path: '/wish/myClaimedWish' })"
+      >
+        <div class="drifting-bottle"></div>
+        <div class="action-text">
+          <h3>我的任务</h3>
+          <span>点这里查看我认领的心愿</span>
         </div>
         <van-icon class="action-arrow" name="arrow" color="#666666" />
       </div>
@@ -71,13 +83,13 @@ export default {
     }
   },
   methods: {
-    handleAction() {
-      if (this.userinfo.is_female) {
-        this.$router.push({ path: "/wish/myWish" });
-      } else {
-        this.$router.push({ path: "/wish/myClaimedWish" });
-      }
-    }
+    // handleAction() {
+    //   if (this.userinfo.is_female) {
+    //     this.$router.push({ path: "/wish/myWish" });
+    //   } else {
+    //     this.$router.push({ path: "/wish/myClaimedWish" });
+    //   }
+    // }
   }
 };
 </script>

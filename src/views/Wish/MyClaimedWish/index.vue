@@ -21,10 +21,10 @@ export default {
     ...mapGetters(["userinfo", "claimedWishes"])
   },
   activated() {
-    if (process.env.NODE_ENV !== "development" && this.userinfo.is_female) {
-      alert("这种事让男生来就好啦（");
-      history.back();
-    }
+    // if (process.env.NODE_ENV !== "development" && this.userinfo.is_female) {
+    //   alert("这种事让男生来就好啦（");
+    //   history.back();
+    // }
   }
 };
 </script>

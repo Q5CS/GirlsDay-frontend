@@ -47,11 +47,7 @@
           round
           block
           type="primary"
-          v-if="
-            data.status <= 100 &&
-              !userinfo.is_female &&
-              userinfo.id !== data.uid
-          "
+          v-if="data.status <= 100 && userinfo.id !== data.uid"
           :disabled="!canClaimWish"
           @click="handleClaimWish(data.id)"
         >
